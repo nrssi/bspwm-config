@@ -1,0 +1,34 @@
+#! /bin/env bash
+
+pgrep -x sxhkd > /dev/null || sxhkd &
+
+emacs --daemon
+# Wallpaper
+feh --bg-fill /usr/share/backgrounds/space.png
+
+# compositor
+picom &
+
+bspc monitor -d I II III IV V
+
+bspc config border_width            2
+bspc config window_gap              5
+bspc config focused_border_color    "#EBCB8B"
+bspc config split_ratio             0.5
+bspc config borderless_monocle      true
+bspc config gapless_monocle         true
+
+# window rules
+bspc rule -a Emacs          state=tiled     desktop='^2' follow=on
+bspc rule -a Brave-browser  state=tiled     desktop='^3' follow=on
+bspc rule -a Alacritty      state=tiled     desktop='^1' follow=on
+bspc rule -a Yad            state=floating
+bspc rule -a zoom           state=floating  desktop='^4' follow=on
+bspc rule -a mplayer2       state=floating
+bspc rule -a Screenkey      manage=off
+
+# polybar with config
+polybar main --config=$HOME/.config/polybar/config
+
+# battery low notifier script
+battery_alert
